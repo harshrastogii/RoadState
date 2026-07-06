@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useState,useRef} from "react";
 import {nt} from "@/lib/data";
 import TabOverview from "@/components/TabOverview";
 import TabTraffic from "@/components/TabTraffic";
@@ -10,10 +10,11 @@ const TABS=["Overview","Traffic & Commutes","Seasonal Access","Road Safety Conte
 
 export default function Page(){
   const [tab,setTab]=useState(0);
-  const pick=(i:number)=>{setTab(i);window.scrollTo({top:0,behavior:"smooth"});};
+  const mastRef=useRef<HTMLElement>(null);
+  const pick=(i:number)=>{setTab(i);const h=mastRef.current?.offsetHeight??0;if(window.scrollY>h)window.scrollTo({top:h,behavior:"smooth"});};
   const {meta}=nt;
   return <>
-    <header className="masthead">
+    <header className="masthead" ref={mastRef}>
       <div className="wrap">
         <div className="dateline"><span>Northern Territory · Open Data</span>
           <span className="rule"/><span>Annual Traffic Report {meta.latest} · filed 2026</span></div>
