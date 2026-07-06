@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useState,useRef} from "react";
 import {nt} from "@/lib/data";
 import TabOverview from "@/components/TabOverview";
 import TabTraffic from "@/components/TabTraffic";
@@ -10,6 +10,8 @@ const TABS=["Overview","Traffic & Commutes","Seasonal Access","Road Safety Conte
 
 export default function Page(){
   const [tab,setTab]=useState(0);
+  const navRef=useRef<HTMLDivElement>(null);
+  const pick=(i:number)=>{setTab(i);navRef.current?.scrollIntoView({behavior:"smooth"});};
   const {meta}=nt;
   return <>
     <header className="masthead">
@@ -27,8 +29,8 @@ export default function Page(){
       </div>
     </header>
 
-    <nav className="nav"><div className="wrap">
-      {TABS.map((t,i)=><button key={t} className={i===tab?"active":""} onClick={()=>setTab(i)}>{t}</button>)}
+    <nav className="nav" ref={navRef}><div className="wrap">
+      {TABS.map((t,i)=><button key={t} className={i===tab?"active":""} onClick={()=>pick(i)}>{t}</button>)}
     </div></nav>
 
     <main className="wrap">
